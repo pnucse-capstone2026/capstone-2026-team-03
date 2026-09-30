@@ -1,0 +1,47 @@
+pipeline:
+  stage: train
+
+experiment:
+  name: kspon-ko-v3-expanded
+
+data:
+  data_root: null
+  work_dir: workspace/kspon_expanded
+  seed: 42
+  # Keep the original evaluation set fixed for a fair comparison with v2.
+  expected_validate_size: 5000
+
+model:
+  pretrained_model: uni2005
+  new_model: kspon_ko_v3_expanded
+  inventory: configs/inventories/kspon_korean_ipa.txt
+  phone_initialization: configs/inventories/kspon_phone_init.json
+  # Best v2 checkpoint (epoch 6, validation PER 0.13249). Model weights only;
+  # optimizer and scheduler state are intentionally initialized from scratch.
+  initial_checkpoint: allosaurus/pretrained/kspon_ko_v2_recovery_wandb/model.pt
+
+training:
+  device_id: 0
+  epochs: 20
+  optimizer: adamw
+  learning_rate: 0.0001
+  # One expanded epoch has roughly three times the updates of the old run.
+  # Use conservative differential LRs to avoid immediately overfitting v2.
+  encoder_learning_rate: 0.00003
+  phone_learning_rate: 0.0001
+  weight_decay: 0.0005
+  scheduler: plateau
+  scheduler_factor: 0.5
+  scheduler_patience: 1
+  minimum_learning_rate: 0.000001
+  early_stopping_patience: 6
+  freeze_encoder_epochs: 0
+  gradient_clip: 5.0
+  batch_frame_size: 6000
+  log_file: log.txt
+
+wandb:
+  project: allosaurus-finetune
+  entity: yejundevelop-pusan-national-university
+  run_name: kspon-ko-v3-expanded
+  mode: online

@@ -1,0 +1,50 @@
+pipeline:
+  stage: train
+
+experiment:
+  name: kspon-ko-v3-expanded-resume-epoch13
+
+data:
+  data_root: null
+  work_dir: workspace/kspon_expanded
+  seed: 42
+  expected_validate_size: 5000
+
+model:
+  pretrained_model: uni2005
+  # Keep the completed run immutable and write continuation artifacts separately.
+  new_model: kspon_ko_v3_expanded_resume_epoch13
+  inventory: configs/inventories/kspon_korean_ipa.txt
+  phone_initialization: configs/inventories/kspon_phone_init.json
+  # Last fully completed checkpoint before the desktop/GPU interruption.
+  initial_checkpoint: allosaurus/pretrained/kspon_ko_v3_expanded_recovery/checkpoints/epoch_0013.pt
+
+training:
+  device_id: 0
+  # The original 15-epoch phase completed 13 epochs. Re-run the interrupted
+  # epoch 14 from its beginning, then complete epoch 15.
+  epochs: 2
+  optimizer: adamw
+  learning_rate: 0.0001
+  encoder_learning_rate: 0.000025
+  phone_learning_rate: 0.0001
+  weight_decay: 0.0005
+  scheduler: plateau
+  scheduler_factor: 0.5
+  scheduler_patience: 1
+  minimum_learning_rate: 0.000001
+  early_stopping_patience: 6
+  freeze_encoder_epochs: 0
+  gradient_clip: 1.0
+  dropout: 0.2
+  time_mask_count: 1
+  time_mask_width: 10
+  max_nonfinite_batches: 5
+  batch_frame_size: 6000
+  log_file: log.txt
+
+wandb:
+  project: allosaurus-finetune
+  entity: yejundevelop-pusan-national-university
+  run_name: kspon-ko-v3-expanded-resume-epoch13
+  mode: online

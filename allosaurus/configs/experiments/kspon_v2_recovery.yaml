@@ -1,0 +1,43 @@
+pipeline:
+  stage: train
+
+experiment:
+  name: kspon-ko-v2-recovery
+
+data:
+  data_root: null
+  work_dir: workspace/kspon_v1
+  seed: 42
+  expected_validate_size: 5000
+
+model:
+  pretrained_model: uni2005
+  new_model: kspon_ko_v2_recovery
+  inventory: configs/inventories/kspon_korean_ipa.txt
+  phone_initialization: configs/inventories/kspon_phone_init.json
+  # Warm-start weights only. Optimizer and scheduler start fresh.
+  initial_checkpoint: allosaurus/pretrained/kspon_ko_v2_fresh/model.pt
+
+training:
+  device_id: 0
+  epochs: 30
+  optimizer: adamw
+  learning_rate: 0.0001
+  encoder_learning_rate: 0.0001
+  phone_learning_rate: 0.0003
+  weight_decay: 0.0001
+  scheduler: plateau
+  scheduler_factor: 0.5
+  scheduler_patience: 2
+  minimum_learning_rate: 0.000001
+  early_stopping_patience: 8
+  freeze_encoder_epochs: 0
+  gradient_clip: 5.0
+  batch_frame_size: 6000
+  log_file: log.txt
+
+wandb:
+  project: none
+  entity: ""
+  run_name: kspon-ko-v2-recovery
+  mode: disabled

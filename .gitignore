@@ -1,0 +1,174 @@
+# -----------------------------------------------------------------------------
+# 비밀정보와 로컬 설정
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.*.example
+local_settings.py
+credentials.json
+*-credentials.json
+service-account*.json
+secrets*.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# -----------------------------------------------------------------------------
+# 운영체제, 에디터, 로컬 에이전트 상태
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+/.agents/
+/.codex/
+
+# -----------------------------------------------------------------------------
+# Python: 가상환경, 캐시, 빌드 및 테스트 산출물
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+.venv*/
+venv/
+env/
+ENV/
+build/
+dist/
+develop-eggs/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+wheels/
+*.egg-info/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.ipynb_checkpoints/
+.nltk_data/
+
+# -----------------------------------------------------------------------------
+# Node.js / Expo / 프런트엔드 생성물
+# package-lock.json 등의 잠금 파일은 재현 가능한 설치를 위해 포함한다.
+# -----------------------------------------------------------------------------
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.expo/
+.expo-shared/
+.expo-check-export/
+.metro-cache/
+.parcel-cache/
+.turbo/
+.next/
+web-build/
+
+# -----------------------------------------------------------------------------
+# Django / 데이터베이스 / 로컬 서비스 런타임
+# -----------------------------------------------------------------------------
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-shm
+*.sqlite3-wal
+celerybeat-schedule
+celerybeat.pid
+/Jipangi/backend/media/
+/Jipangi/backend/staticfiles/
+/Jipangi/.mysql-data*/
+/Jipangi/.mysql-run/
+/Jipangi/.postman/
+
+# -----------------------------------------------------------------------------
+# 다운로드한 AI 모델과 모델 캐시
+# 모델은 코드 저장소가 아니라 원본 배포처나 별도 아티팩트 저장소에서 받는다.
+# -----------------------------------------------------------------------------
+/.hf_cache/
+/judge_models/
+/qwen/
+/Jipangi/backend/models/
+/allosaurus/allosaurus/pretrained/
+/allosaurus/test_model/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.tflite
+*.h5
+
+# -----------------------------------------------------------------------------
+# 음성 데이터, 전처리 결과, 학습 체크포인트 및 실험 로그
+# 작은 allosaurus/sample.wav는 실행 예제이므로 의도적으로 포함한다.
+# -----------------------------------------------------------------------------
+/processed_data/
+/allosaurus/tmp_data/
+/allosaurus/data/
+/allosaurus/datasets/
+/allosaurus/corpus/
+/allosaurus/corpora/
+/allosaurus/workspace/
+/allosaurus/artifacts/
+/allosaurus/outputs/
+/allosaurus/reports/
+/allosaurus/runs/
+/allosaurus/logs/
+/allosaurus/wandb/
+/allosaurus/tensorboard/
+/allosaurus/한국전자통신연구원_*/
+*.ark
+*.scp
+slurm-*.out
+
+# 출처·재배포 권한 확인 전의 로컬 문장 데이터
+/korean_*.json
+/korean_*.xlsx
+
+# -----------------------------------------------------------------------------
+# 로컬에서 받은 실행 파일
+# -----------------------------------------------------------------------------
+/Jipangi/tools/cloudflared
+
+# -----------------------------------------------------------------------------
+# 로그, 임시 파일, TeX 중간 산출물
+# -----------------------------------------------------------------------------
+*.log
+*.tmp
+*.temp
+/report/**/*.aux
+/report/**/*.bbl
+/report/**/*.bcf
+/report/**/*.blg
+/report/**/*.fdb_latexmk
+/report/**/*.fls
+/report/**/*.lof
+/report/**/*.lot
+/report/**/*.out
+/report/**/*.run.xml
+/report/**/*.synctex.gz
+/report/**/*.toc

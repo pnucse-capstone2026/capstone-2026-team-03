@@ -1,0 +1,475 @@
+% !TeX program = xelatex
+% 부산대학교 졸업과제 중간보고서 LaTeX 양식
+% 컴파일 권장: XeLaTeX
+% 부산대학교 로고 파일명: pusan_logo.png
+
+\documentclass[12pt,a4paper,oneside]{report}
+
+% -------------------------------------------------
+% 기본 패키지
+% -------------------------------------------------
+\usepackage{kotex}
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{ragged2e}
+
+% -------------------------------------------------
+% 페이지 설정
+% -------------------------------------------------
+\geometry{
+  top=22mm,
+  bottom=20mm,
+  left=22mm,
+  right=22mm,
+  headheight=14pt,
+  footskip=10mm
+}
+
+\setstretch{1.35}
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+\renewcommand{\arraystretch}{1.25}
+
+% -------------------------------------------------
+% 한글/영문 폰트
+% 시스템에 없는 경우 아래 폰트명을 설치된 폰트로 바꾸세요.
+% -------------------------------------------------
+\IfFontExistsTF{Noto Sans CJK KR}{
+  \setmainhangulfont{Noto Sans CJK KR}
+  \setsanshangulfont{Noto Sans CJK KR}
+}{
+  \setmainhangulfont{UnDotum}
+  \setsanshangulfont{UnDotum}
+}
+
+% -------------------------------------------------
+% 보고서 기본 정보: 여기만 수정하면 표지에 반영됩니다.
+% -------------------------------------------------
+\newcommand{\ProjectTitle}{프로젝트 제목을 입력하세요}
+\newcommand{\TeamName}{팀 이름}
+
+\newcommand{\MemberOne}{202000000 홍길동}
+\newcommand{\MemberTwo}{202000001 김철수}
+\newcommand{\MemberThree}{202000002 이영희}
+% 인원이 더 많으면 아래 표지 부분에 줄을 추가하세요.
+
+\newcommand{\AdvisorName}{홍길동}
+\newcommand{\SubmissionDate}{2026년 00월 00일}
+\newcommand{\UniversityName}{부산대학교}
+
+% -------------------------------------------------
+% 장/절 제목 스타일
+% 원본 보고서의 "제 1장 서론", "1.1 연구 배경..." 형식을 재현
+% -------------------------------------------------
+\titleformat{\chapter}[block]
+  {\normalfont\bfseries\fontsize{24pt}{30pt}\selectfont}
+  {제 \thechapter 장}
+  {0.8em}
+  {}
+\titlespacing*{\chapter}{0pt}{0pt}{28pt}
+
+\titleformat{\section}
+  {\normalfont\bfseries\fontsize{17pt}{22pt}\selectfont}
+  {\thesection}
+  {0.7em}
+  {}
+\titlespacing*{\section}{0pt}{18pt}{10pt}
+
+\titleformat{\subsection}
+  {\normalfont\bfseries\fontsize{14pt}{19pt}\selectfont}
+  {\thesubsection}
+  {0.7em}
+  {}
+\titlespacing*{\subsection}{0pt}{14pt}{7pt}
+
+% -------------------------------------------------
+% 목차 스타일
+% -------------------------------------------------
+\renewcommand{\contentsname}{목차}
+\titlecontents{chapter}
+  [0pt]
+  {\vspace{0.8em}\bfseries}
+  {\contentslabel{2.3em}}
+  {}
+  {\titlerule*[0.7pc]{.}\contentspage}
+
+\titlecontents{section}
+  [1.5em]
+  {}
+  {\contentslabel{3.0em}}
+  {}
+  {}
+
+\titlecontents{subsection}
+  [3.0em]
+  {}
+  {\contentslabel{3.8em}}
+  {}
+  {}
+
+% -------------------------------------------------
+% 페이지 번호: 1/12 형식
+% 표지와 목차에서는 숨기고 본문부터 표시
+% -------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[C]{\thepage/\pageref*{LastPage}}
+
+% -------------------------------------------------
+% 그림/표 캡션 형식: <그림 1. 설명>, <표 1. 설명>
+% -------------------------------------------------
+\renewcommand{\figurename}{그림}
+\renewcommand{\tablename}{표}
+\captionsetup{
+  font=normalsize,
+  labelfont=normalfont,
+  labelsep=period,
+  justification=centering,
+  singlelinecheck=false
+}
+
+% 원본 스타일처럼 꺾쇠 캡션을 쓰고 싶을 때 사용
+\newcommand{\figcaption}[1]{%
+  \caption*{<그림 \thefigure. #1>}%
+}
+\newcommand{\tabcaption}[1]{%
+  \caption*{<표 \thetable. #1>}%
+}
+
+% -------------------------------------------------
+% 자주 쓰는 양식용 명령
+% -------------------------------------------------
+\newcommand{\placeholdertext}{%
+  본문 내용을 입력하세요. 프로젝트의 목적, 구현 내용, 실험 결과 및 분석을 구체적으로 작성합니다.
+}
+
+\newcommand{\placeholderfigure}[2][0.85\textwidth]{%
+  \begin{figure}[H]
+    \centering
+    \fbox{\parbox[c][6cm][c]{#1}{\centering 이미지 삽입 영역\\[0.5em]\texttt{\textbackslash includegraphics\{파일명.png\}}}}
+    \caption{#2}
+  \end{figure}
+}
+
+\newcommand{\placeholderwidefigure}[2][0.95\textwidth]{%
+  \begin{figure}[H]
+    \centering
+    \fbox{\parbox[c][9cm][c]{#1}{\centering 큰 이미지/시스템 구조도 삽입 영역}}
+    \caption{#2}
+  \end{figure}
+}
+
+% -------------------------------------------------
+% 문서 시작
+% -------------------------------------------------
+\begin{document}
+
+% =================================================
+% 표지
+% =================================================
+\begin{titlepage}
+  \thispagestyle{empty}
+  \begin{center}
+    \vspace*{22mm}
+
+    {\fontsize{25pt}{34pt}\selectfont\bfseries \ProjectTitle\par}
+
+    \vspace{24mm}
+
+    {\fontsize{16pt}{22pt}\selectfont\bfseries 팀 \TeamName\par}
+
+    \vspace{10mm}
+
+    {\fontsize{14pt}{22pt}\selectfont
+      \MemberOne\\
+      \MemberTwo\\
+      \MemberThree
+    \par}
+
+    \vspace{16mm}
+
+    {\fontsize{14pt}{20pt}\selectfont 지도교수 \AdvisorName\par}
+
+    \vspace{12mm}
+
+    {\fontsize{14pt}{20pt}\selectfont 제출일 \SubmissionDate\par}
+
+    \vfill
+
+    % 부산대학교 로고 파일을 같은 폴더에 pusan_logo.png 이름으로 두세요.
+    \IfFileExists{pnulogo.jpg}{%
+      \includegraphics[width=0.22\textwidth]{pusan_logo.png}\\[6mm]
+    }{%
+      \fbox{\parbox[c][28mm][c]{0.22\textwidth}{\centering 부산대학교 로고\\\texttt{pusan\_logo.png}}}\\[6mm]
+    }
+
+    {\fontsize{17pt}{22pt}\selectfont\bfseries \UniversityName\par}
+    \vspace{10mm}
+  \end{center}
+\end{titlepage}
+
+% =================================================
+% 목차
+% =================================================
+\pagenumbering{gobble}
+\tableofcontents
+\clearpage
+
+% =================================================
+% 본문 시작
+% =================================================
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% =================================================
+% 제 1장 서론
+% =================================================
+\chapter{서론}
+
+\section{연구 배경 및 기존 문제점}
+\placeholdertext
+
+\placeholderfigure{연구 배경 관련 그림 제목}
+
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 문제점 또는 배경 요약 1
+  \item 문제점 또는 배경 요약 2
+  \item 문제점 또는 배경 요약 3
+\end{itemize}
+
+\section{소프트웨어 설계 목표}
+\placeholdertext
+
+\placeholderfigure{페르소나 또는 설계 목표 관련 그림 제목}
+
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 설계 목표 1
+  \item 설계 목표 2
+  \item 설계 목표 3
+\end{itemize}
+
+% =================================================
+% 제 2장 프로젝트 기능
+% =================================================
+\chapter{프로젝트 기능}
+
+\section{주요 기능 소개}
+
+\subsection{기능 1}
+\placeholdertext
+
+\subsection{기능 2}
+\placeholdertext
+
+\subsection{기능 3}
+\placeholdertext
+
+\subsection{기능 4}
+\placeholdertext
+
+\subsection{기능 5}
+\placeholdertext
+
+\subsection{기능 6}
+\placeholdertext
+
+\subsection{기능 7}
+\placeholdertext
+
+% 기능 화면 예시
+\placeholderwidefigure{주요 기능 화면 1}
+\placeholderwidefigure{주요 기능 화면 2}
+\placeholderwidefigure{주요 기능 화면 3}
+
+% =================================================
+% 제 3장 시스템 설계 및 구현
+% =================================================
+\chapter{시스템 설계 및 구현}
+
+\section{전체 구조 개요}
+
+\subsection{클라이언트--서버 아키텍처}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 클라이언트: 기술 스택 입력
+  \item 서버: 기술 스택 입력
+  \item 데이터베이스: 사용 기술 입력
+  \item 외부 API 및 AI 기능: 사용 기술 입력
+\end{itemize}
+
+\placeholderwidefigure{서비스 아키텍처}
+
+\subsection{주요 통신 흐름}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 사용자 $\rightarrow$ 앱: 입력 또는 요청
+  \item 앱 $\rightarrow$ 서버: API 요청
+  \item 서버 $\rightarrow$ 외부 API: 데이터 조회 또는 AI 호출
+  \item 서버 $\leftrightarrow$ DB: 데이터 저장 및 조회
+\end{itemize}
+
+\placeholderwidefigure{주요 처리 흐름}
+
+\section{프론트엔드}
+
+\subsection{기술 스택}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 기술 1
+  \item 기술 2
+  \item 기술 3
+\end{itemize}
+
+\subsection{주요 화면 구조}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 화면 1: 설명
+  \item 화면 2: 설명
+  \item 화면 3: 설명
+\end{itemize}
+
+\section{백엔드}
+
+\subsection{기술 스택}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 기술 1
+  \item 기술 2
+  \item 기술 3
+\end{itemize}
+
+\subsection{DB 설계 및 주요 테이블}
+\begin{table}[H]
+  \centering
+  \begin{tabularx}{0.92\textwidth}{>{\bfseries}l X}
+    \toprule
+    테이블명 & 역할 \\
+    \midrule
+    User & 사용자 정보 \\
+    Example & 주요 데이터 설명 \\
+    \bottomrule
+  \end{tabularx}
+  \caption{주요 데이터베이스 테이블}
+\end{table}
+
+\subsection{보안 및 인증}
+\placeholdertext
+
+\subsection{AI 연동 로직}
+\placeholdertext
+
+% =================================================
+% 제 4장 개발 일정 및 역할 분담
+% =================================================
+\chapter{개발 일정 및 역할 분담}
+
+\section{개발 일정}
+
+\subsection{1차 기획 및 설계}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 아이디어 구체화 및 서비스 기획
+  \item 기술 스택 선정 및 기본 설계
+\end{itemize}
+
+\subsection{2차 개발 및 통신 구현}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 프론트엔드 구현
+  \item 백엔드 및 API 연동
+\end{itemize}
+
+\subsection{3차 테스트 및 마무리}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 주요 기능 통합 테스트
+  \item 발표 자료 및 보고서 작성
+\end{itemize}
+
+\section{역할 분담}
+
+\subsection{팀원 1}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 담당 업무 1
+  \item 담당 업무 2
+\end{itemize}
+
+\subsection{팀원 2}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 담당 업무 1
+  \item 담당 업무 2
+\end{itemize}
+
+\subsection{팀원 3}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 담당 업무 1
+  \item 담당 업무 2
+\end{itemize}
+
+% =================================================
+% 제 5장 결과 분석 및 기대 효과
+% =================================================
+\chapter{결과 분석 및 기대 효과}
+
+\section{결과 분석}
+
+\subsection{분석 항목 1}
+\placeholdertext
+
+\subsection{분석 항목 2}
+\placeholdertext
+
+\subsection{분석 항목 3}
+\placeholdertext
+
+\subsection{시스템 안정성 및 확장성}
+\placeholdertext
+
+\section{기대 효과}
+\begin{itemize}[leftmargin=1.5em,label={-},itemsep=2pt,topsep=4pt]
+  \item 기대 효과 1
+  \item 기대 효과 2
+  \item 기대 효과 3
+\end{itemize}
+
+% =================================================
+% 제 6장 결론 및 향후 계획
+% =================================================
+\chapter{결론 및 향후 계획}
+
+\section{결론}
+\placeholdertext
+
+\section{향후 개발 계획}
+
+\subsection{고도화 방향}
+\placeholdertext
+
+\subsection{추후 플랫폼 확장}
+\placeholdertext
+
+\section{기대 성장 방향}
+\placeholdertext
+
+% =================================================
+% 제 7장 참고문헌
+% =================================================
+\chapter{참고문헌}
+
+\begin{enumerate}[leftmargin=2em,label=\arabic*.]
+  \item 저자, ``문헌 제목'', 출판사 또는 학회명, 연도.
+  \item 공식 문서명, 서비스 또는 기관명, \url{https://example.com}.
+  \item 저자, ``논문 제목'', 학회/저널명, 권(호), 페이지, 연도.
+\end{enumerate}
+
+\end{document}

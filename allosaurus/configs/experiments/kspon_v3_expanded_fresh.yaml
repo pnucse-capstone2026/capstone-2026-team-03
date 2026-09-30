@@ -1,0 +1,46 @@
+pipeline:
+  stage: train
+
+experiment:
+  name: kspon-ko-v3-expanded-fresh
+
+data:
+  data_root: null
+  work_dir: workspace/kspon_expanded
+  seed: 42
+  expected_validate_size: 5000
+
+model:
+  pretrained_model: uni2005
+  new_model: kspon_ko_v3_expanded_fresh
+  inventory: configs/inventories/kspon_korean_ipa.txt
+  phone_initialization: configs/inventories/kspon_phone_init.json
+  # Deliberately no initial_checkpoint: start a new Korean fine-tune from
+  # the universal acoustic encoder and a newly constructed 34-phone head.
+
+training:
+  device_id: 0
+  epochs: 20
+  optimizer: adamw
+  learning_rate: 0.0001
+  encoder_learning_rate: 0.00005
+  phone_learning_rate: 0.0003
+  weight_decay: 0.0005
+  scheduler: plateau
+  scheduler_factor: 0.5
+  scheduler_patience: 1
+  minimum_learning_rate: 0.000001
+  early_stopping_patience: 6
+  freeze_encoder_epochs: 0
+  gradient_clip: 5.0
+  dropout: 0.2
+  time_mask_count: 2
+  time_mask_width: 20
+  batch_frame_size: 6000
+  log_file: log.txt
+
+wandb:
+  project: allosaurus-finetune
+  entity: yejundevelop-pusan-national-university
+  run_name: kspon-ko-v3-expanded-fresh
+  mode: online

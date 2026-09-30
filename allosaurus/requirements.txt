@@ -1,0 +1,11 @@
+scipy
+numpy
+resampy
+panphon
+torch
+editdistance
+requests
+tqdm
+wandb
+PyYAML
+setuptools<81

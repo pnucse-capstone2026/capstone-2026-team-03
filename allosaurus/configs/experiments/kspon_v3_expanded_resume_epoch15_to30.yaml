@@ -1,0 +1,51 @@
+pipeline:
+  stage: train
+
+experiment:
+  name: kspon-ko-v3-expanded-resume-epoch15-to30
+
+data:
+  data_root: null
+  work_dir: workspace/kspon_expanded
+  seed: 42
+  expected_validate_size: 5000
+
+model:
+  pretrained_model: uni2005
+  # Preserve both earlier training phases and write epochs 16-30 separately.
+  new_model: kspon_ko_v3_expanded_resume_epoch15_to30
+  inventory: configs/inventories/kspon_korean_ipa.txt
+  phone_initialization: configs/inventories/kspon_phone_init.json
+  # Phase epoch 2 corresponds to total epoch 15:
+  # original 13 completed epochs + resumed 2 epochs.
+  initial_checkpoint: allosaurus/pretrained/kspon_ko_v3_expanded_resume_epoch13/checkpoints/epoch_0002.pt
+
+training:
+  device_id: 0
+  # Add epochs 16-30, bringing cumulative training to 30 epochs.
+  epochs: 15
+  optimizer: adamw
+  learning_rate: 0.0001
+  encoder_learning_rate: 0.000025
+  phone_learning_rate: 0.0001
+  weight_decay: 0.0005
+  scheduler: plateau
+  scheduler_factor: 0.5
+  scheduler_patience: 1
+  minimum_learning_rate: 0.000001
+  # Run all 15 requested epochs even if validation temporarily plateaus.
+  early_stopping_patience: 0
+  freeze_encoder_epochs: 0
+  gradient_clip: 1.0
+  dropout: 0.2
+  time_mask_count: 1
+  time_mask_width: 10
+  max_nonfinite_batches: 5
+  batch_frame_size: 6000
+  log_file: log.txt
+
+wandb:
+  project: allosaurus-finetune
+  entity: yejundevelop-pusan-national-university
+  run_name: kspon-ko-v3-expanded-resume-epoch15-to30
+  mode: online
